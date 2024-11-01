@@ -1,0 +1,38 @@
+.about {
+	margin:0 0 10px;
+	padding:5px;
+	font-style: italic;
+	font-size: 14px;
+}
+
+.logo-container {
+	float:left;
+	width: 104px;
+	height: 88px;
+	margin: 0 20px 10px 0;
+}
+
+.logo {
+	height: 30px;
+	width: 103px;
+}
+
+.logo_pic {
+	height: 60px;
+	width: 105px;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+ 
+.clearfix {display: inline-block;}
+ 
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */

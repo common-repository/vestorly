@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<head>
+<title>Vestorly Shortcode</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="../../../../wp-includes/js/tinymce/tiny_mce_popup.js"></script>
+<style>
+  body { font-size: 14px; }
+  label { font-weight: normal }
+  input[type="checkbox"] { height:14px; width:14px;}
+  .form-group { line-height: 33px; margin-bottom: 4px; }
+  button { margin: 2px;  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <form class="form-horizontal settingForm" role="form">
+      <div class="form-group">
+          <div class="col-xs-12">
+             <label><input id="slideshow" type="checkbox" /> Slide show</label>
+          </div>
+       </div>
+
+      <div class="form-group">
+          <label class="col-xs-4 control-label">Library</label>
+          <div class="col-xs-8">
+             <select class="form-control" id="library">
+             </select>
+          </div>
+       </div>
+
+       <div class="form-group">
+          <label class="col-xs-4 control-label">Display</label>
+          <div class="col-xs-8">
+             <select class="form-control" id="display">
+             </select>
+          </div>
+       </div>
+
+       <div class="form-group">
+          <label class="col-xs-4 control-label">Height (px)</label>
+          <div class="col-xs-8">
+             <input type="text" class="form-control" id="height" placeholder="height" value="270px">
+          </div>
+       </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Width (px)</label>
+          <div class="col-xs-8">
+             <input type="text" class="form-control" id="width" placeholder="width" value="100%">
+          </div>
+       </div>
+
+       <div class="form-group">
+          <label class="col-xs-4 control-label">Limit</label>
+          <div class="col-xs-8">
+             <select class="form-control" id="limit">
+             </select>
+          </div>
+       </div>
+       <div class="form-group">
+          <div class="col-xs-12">
+             <label><input id="anonymous" type="checkbox" /> Allow anonymous login</label>
+          </div>
+       </div>
+
+       <div style="margin-top:20px;"></div>
+
+       <div class="form-group">
+          <div class="col-xs-12 control-group">
+             <button id="btnCancel" type="button" class="btn btn-default pull-right">Cancel</button>
+             <button id="btnOk" type="submit" class="btn btn-primary pull-right"> Ok </button>
+          </div>
+       </div>
+    </form>
+  </div>
+  <script type="text/javascript">
+    function addOptions(id, options) {
+      for(var i=0; i<options.length; i++) {
+        $(id).append($("<option></option>")
+             .attr("value", options[i].value)
+             .text(options[i].text));
+      }
+    }
+
+    function submitContent() {
+      var data = {};
+
+      $('#btnOk').prop('disabled', true);
+
+      data.slideshow  = $('#slideshow').val();
+      data.library    = $('#library').val();
+      data.display    = $('#display').val();
+      data.height     = $('#height').val();
+      data.width      = $('#width').val();
+      data.limit      = $('#limit').val();
+      data.anonymous  = $('#anonymous').val();
+
+      writeContent(data);
+      tinyMCEPopup.close();
+      return false;
+    }
+
+    function writeContent(data) {
+      var content = '[vestorly ' + 'library=' + data.library + ' display=' + data.display  + ' height=' + data.height + ' width=' + data.width  + ' limit=' + data.limit +  ' slideshow=' + data.slideshow + ' anonymous=' + data.anonymous + ']';
+      tinyMCEPopup.execCommand('mceReplaceContent', false, content);
+    }
+
+    function init(store) {
+      // handler for cancel
+      $('#btnCancel').on('click', function(){
+        tinyMCEPopup.close();
+      });
+
+      // handler for submit
+      $(document).on('submit','form.settingForm', submitContent);
+
+      addOptions('#limit', store.limits);
+      addOptions('#display', store.types);
+      addOptions('#library', store.groups);
+    }
+
+    tinyMCEPopup.onInit.add(function(ed) {
+      var store = ed.windowManager.params.store;
+
+      init(store);
+    });
+  </script>
+</body>
+</html>
